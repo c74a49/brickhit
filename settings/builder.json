@@ -1,0 +1,32 @@
+{
+  "appKey": "",
+  "appSecret": "",
+  "encryptJs": true,
+  "excludeScenes": [],
+  "includeAnySDK": false,
+  "includeSDKBox": false,
+  "inlineSpriteFrames": true,
+  "inlineSpriteFrames_native": true,
+  "jailbreakPlatform": false,
+  "md5Cache": false,
+  "mergeStartScene": false,
+  "oauthLoginServer": "",
+  "optimizeHotUpdate": false,
+  "orientation": {
+    "landscapeLeft": false,
+    "landscapeRight": false,
+    "portrait": true,
+    "upsideDown": false
+  },
+  "packageName": "org.cocos2d.brickbreakermaster",
+  "privateKey": "",
+  "renderMode": "2",
+  "startScene": "7933c722-6934-4d81-b103-1e29d93d86ca",
+  "title": "dztyt",
+  "webOrientation": "auto",
+  "wechatgame": {
+    "appid": "wx20efd16081f0673d",
+    "orientation": "portrait"
+  },
+  "xxteaKey": "be856dda-b1dc-4a"
+}

@@ -1,0 +1,143 @@
+//window.console.log = function () { };
+
+let common = require("Common");
+let Const = require("Const");
+
+window.gameScore = 0;
+window.gameBalls = 0;
+
+let self;
+ cc.Class({
+    extends: cc.Component,
+
+    properties: {
+        rebornLayout: require('RebornLayout'),
+        //paddle: require("Paddle"),
+        brickLayout:require("BrickLayout"),
+        ground:require("Ground"),
+        player: require("Player"),
+        ballsMnt: cc.Node,
+    },
+    ctor: function(){
+        self = this;
+    },
+    // use this for initialization
+    onLoad: function () {
+        //自适应
+        //var screenSize = cc.view.getFrameSize();
+        //if (screenSize.height / screenSize.width >= 1.78) {
+        //    this.node.getComponent(cc.Canvas).fitWidth = true
+        //}
+        //else {
+        //    this.node.getComponent(cc.Canvas).fitHeight = true
+        //}
+        //安卓返回键退出
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, function (event) {
+            if (event.keyCode === cc.KEY.back) {
+                cc.director.end();
+            }
+        });
+        cc.director.preloadScene('over', function () {
+            console.log('Next scene preloaded');
+        });
+        this.gameView = this.getComponent("GameView");
+        this.wxAddLayout = this.getComponent("wxAddLayer");
+        this.physicsManager = cc.director.getPhysicsManager();
+        this.physicsManager.enabled = true;
+
+        if(window.bannerAd){
+            this._bannerAd = this.getComponent("BannerBlock");
+            this._bannerAd.startLoop();
+        }
+    },
+    start: function () {
+        this.startGame();
+        this.wxAddLayout.setShareAssist(()=>this.gameView.updateGold(this.getGold()));
+    },
+
+    init: function () {
+        window.gameBalls = 0;
+        window.gameScore = 0;
+        this.physicsManager.enabled = true;
+        //this.gameView.updateScore(gameScore);
+        this.gameView.updateBest(this.dbGetScore());
+        this.gameView.updateGold(this.getGold());
+        this.rebornLayout.init(this);
+        this.ground.reset(this);
+
+    },
+
+    rebornCtrl: function () { 
+        //重生控制逻辑
+        this.physicsManager.enabled = false;
+        this.rebornLayout.show(gameScore);
+    },
+    reborn: function () {
+        //重生逻辑
+        //window.gameScore = 0;
+        window.gameBalls = 0;
+        this.physicsManager.enabled = true;
+        this.brickLayout.reset(this);
+        this.brickLayout.newBrickLayout(3);
+        this.player.reset(this);
+        //this.rebornCtrl();
+    },
+    startGame: function () {
+        this.init();
+        this.showBannerAd();
+        //开始逻辑
+        window.gameScore = 0;
+        window.gameBalls = 0;
+        window.ballsMap = new Array();
+        this.brickLayout.reset(this);
+        this.newStage();
+        this.player.reset(this);
+        //this.rebornCtrl();
+    },
+    newStage: function(){
+        let repeat = 2;
+        this.ballsMnt.children.map((node) => window.ballsMap[node.getComponent("Ball").id] = true);
+        if(this.brickLayout.newBrickLayout(repeat)) this.rebornCtrl();
+        window.gameScore += repeat;
+    },
+    stopGame: function(){
+        cc.director.loadScene('over');
+    },
+
+    addScore1: ()=>{
+        gameScore += 1;
+        self.gameView.updateScore(gameScore);
+    },
+    dbSetScore: function (score) {
+        this.wxAddLayout.setScore(score)
+    },
+    dbGetScore: function () {
+        return this.wxAddLayout.getScore();
+    },
+    addGold: function (gold) {
+        this.wxAddLayout.addGold(gold)
+        this.gameView.updateGold(this.getGold());
+    },
+    subGold: function (num, callBack) {
+        let self= this;
+        self.wxAddLayout.subGold(num, (success)=>{
+            if(success)
+                self.gameView.updateGold(this.getGold());
+            if(typeof callBack == "function") callBack(success);
+        })
+    },
+    getGold: function () {
+        return this.wxAddLayout.getGold();
+    },
+    showBannerAd: function () {
+        if (this._bannerAd) this._bannerAd.show();
+    },
+    hideBannerAd: function () {
+        if (this._bannerAd) this._bannerAd.hide();
+    },
+    onDestroy: function () {
+        this.physicsManager.enabled = false;
+        this.hideBannerAd();
+    }
+
+});

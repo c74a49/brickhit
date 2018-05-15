@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "f88903b9-e6f5-481c-9e22-2d4706842a6d",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "icon_baiqiu": {
+      "ver": "1.0.3",
+      "uuid": "32d7afc0-04f3-4add-9fb1-68e30c4cb392",
+      "rawTextureUuid": "f88903b9-e6f5-481c-9e22-2d4706842a6d",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 30,
+      "height": 30,
+      "rawWidth": 30,
+      "rawHeight": 30,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

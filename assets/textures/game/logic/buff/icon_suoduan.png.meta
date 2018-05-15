@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "ba3dd76a-a80d-4c4a-9400-5b07b2ca3bbe",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "icon_suoduan": {
+      "ver": "1.0.3",
+      "uuid": "559749d7-ea9c-4f97-816e-69ff1d9f2385",
+      "rawTextureUuid": "ba3dd76a-a80d-4c4a-9400-5b07b2ca3bbe",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 44,
+      "height": 44,
+      "rawWidth": 44,
+      "rawHeight": 44,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

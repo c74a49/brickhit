@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "a6136426-8381-4e3d-a6a1-3330464c7a95",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "goldRevivi": {
+      "ver": "1.0.3",
+      "uuid": "ae032ff8-4745-4542-b26b-8652d3f9ccf8",
+      "rawTextureUuid": "a6136426-8381-4e3d-a6a1-3330464c7a95",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 161,
+      "height": 68,
+      "rawWidth": 161,
+      "rawHeight": 68,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

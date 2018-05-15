@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "13e0d4a1-e868-4c0d-8e07-45db2d3c4e42",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "icon_chuanguoqiu": {
+      "ver": "1.0.3",
+      "uuid": "dca095a1-7917-4525-9f67-15916f0a7a09",
+      "rawTextureUuid": "13e0d4a1-e868-4c0d-8e07-45db2d3c4e42",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 44,
+      "height": 44,
+      "rawWidth": 44,
+      "rawHeight": 44,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
