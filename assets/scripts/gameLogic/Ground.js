@@ -45,7 +45,7 @@ cc.Class({
                     console.log("gg smd");
                     this.game.rebornCtrl();
                 }
-                else this.paddle.contackBall(other.node.getComponent("Ball").id);
+                else this.paddle.contackBall(other.node.getComponent("Ball"));
                 this.scheduleOnce(() => {
                     other.node.active = false;
                     other.node.destroy();

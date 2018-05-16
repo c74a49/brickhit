@@ -136,8 +136,9 @@ cc.Class({
                             //brickNode.destroy();
                             //continue;
                         }
-                        else ballCnt++;
-                        if (_type == foodType.TYPE_ADDBALLS1 && ballCnt > ballMax){ 
+                        else if (rand > 0.92) (_type = foodType.TYPE_BALL) && ballCnt++;
+                        //else ballCnt++;
+                        if (_type == foodType.TYPE_ADDBALLS1 && ballCnt > ballMax) {
                             brickNode.destroy();
                             continue;
                         }
@@ -155,7 +156,7 @@ cc.Class({
                     }
                     brickNode.parent = this.node;
                     brickNode.x = this.padding + (i % this.cols) * (this.nodeWidth + this.padding) + this.nodeWidth / 2;
-                    brickNode.y = yoffset -this.spacing - this.nodeHeight / 2;
+                    brickNode.y = yoffset - this.spacing - this.nodeHeight / 2;
                 }
             }
         }
@@ -166,6 +167,7 @@ cc.Class({
         else {  */
         let down = repeat;
         let over = false;
+        /*
         this.node.children.map((node)=>{
             let pos = this.node.convertToWorldSpaceAR(node.getPosition());
             let death = this.line.parent.convertToWorldSpaceAR(this.line.getPosition()).y;
@@ -176,11 +178,19 @@ cc.Class({
             } else if(left < repeat) return node;
 
         }).map((node)=>{if(node) node.destroy()});
-
-        this.node.children.map((node)=>{
+        */
+        this.node.children.map((node) => {
             let pos = this.node.convertToWorldSpaceAR(node.getPosition());
             let death = this.line.parent.convertToWorldSpaceAR(this.line.getPosition()).y;
-        
+            let left = Math.floor((pos.y - death) / (this.nodeHeight + this.spacing) + 0.5);
+            down = Math.min(left, down);
+            if (left <= repeat) over = true;
+        });
+
+        this.node.children.map((node) => {
+            let pos = this.node.convertToWorldSpaceAR(node.getPosition());
+            let death = this.line.parent.convertToWorldSpaceAR(this.line.getPosition()).y;
+
             let finished = cc.callFunc(function (obj, target) {
                 /*
                 this.cnt += 1;

@@ -60,6 +60,9 @@ let self;
         window.gameScore = 0;
         this.physicsManager.enabled = true;
         //this.gameView.updateScore(gameScore);
+        this.flg = false;
+        let timeOut = 1;
+        this.schedule(()=>{this.flg = true;}, timeOut);
         this.gameView.updateBest(this.dbGetScore());
         this.gameView.updateGold(this.getGold());
         this.rebornLayout.init(this);
@@ -78,7 +81,7 @@ let self;
         window.gameBalls = 0;
         this.physicsManager.enabled = true;
         this.brickLayout.reset(this);
-        this.brickLayout.newBrickLayout(3);
+        this.brickLayout.newBrickLayout(2);
         this.player.reset(this);
         //this.rebornCtrl();
     },
@@ -88,14 +91,17 @@ let self;
         //开始逻辑
         window.gameScore = 0;
         window.gameBalls = 0;
-        window.ballsMap = new Array();
+        window.ballsMap = {};
         this.brickLayout.reset(this);
-        this.newStage();
+        this.brickLayout.newBrickLayout(2);
         this.player.reset(this);
         //this.rebornCtrl();
     },
     newStage: function(){
-        let repeat = 2;
+        if(!this.flg) return;
+        this.flg = false;
+        let repeat = 1;
+        window.ballsMap = {};
         this.ballsMnt.children.map((node) => window.ballsMap[node.getComponent("Ball").id] = true);
         if(this.brickLayout.newBrickLayout(repeat)) this.rebornCtrl();
         window.gameScore += repeat;

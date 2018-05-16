@@ -13,6 +13,8 @@ let common = require("Common");
 let tagConst = require("Const").PHYSICIS_TAG;
 let buffType = require("Const").BUFF_TYPE;
 let buffTimeOut = 8;
+let colors = [cc.color(211, 211, 211), cc.color(255, 90, 90), cc.color(255, 222, 89),];
+window.inBalls = 0;
 cc.Class({
     extends: cc.Component,
 
@@ -33,6 +35,7 @@ cc.Class({
         //     }
         // },
         touch: cc.Node,
+        ballSpriteFrames: [cc.SpriteFrame],
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -51,7 +54,9 @@ cc.Class({
     },
     reset: function (game) {
         this.game = game;
-        this.balls = 0;
+        //this.balls = 0;
+        window.inBalls = 0;
+        this.stages = 1;
         //this.clearnState();
         this.touch.on("touchstart", this.onTouchStart, this);
         this.touch.on("touchmove", this.onTouchMove, this);
@@ -84,11 +89,12 @@ cc.Class({
         this.touch.off("touchend", this.onTouchEnd, this);
         this.on = false;
     },
-    clearnState:function(){
+    clearnState: function () {
         this.unscheduleAllCallbacks();
         this.speedScale = 1.0;
         this.node.width = this.defaultWidth;
         this.getComponent(cc.PhysicsCollider).size.width = this.node.width;
+        this.getComponent(cc.PhysicsCollider).apply();
     },
     changeWidthScale: function (scale) {
         let width = this.node.width * scale;
@@ -96,20 +102,37 @@ cc.Class({
         width = Math.max(this.minWidth, width);
         this.node.width = width;
         this.getComponent(cc.PhysicsCollider).size.width = width;
-    },
+        this.getComponent(cc.PhysicsCollider).apply();
+    },/*
     contackBall: function(id){
         if (window.ballsMap[id]) this.balls += 1;
                 window.ballsMap[id] = false;
                 if (window.gameBalls > 0 && this.balls >= window.gameBalls) {
                     this.game.newStage();
-                    this.balls = 0;
+                    this.balls = 0; 
                 }
                 console.log(ballsMap, gameBalls, this.balls);
+    },*/
+    contackBall: function (ball) {
+        window.ballsMap[ball.id] = false;
+        ball.getComponent(cc.Sprite).spriteFrame = this.ballSpriteFrames[this.stages % this.ballSpriteFrames.length];
+        if (window.gameBalls > 0 && inBalls >= window.gameBalls) {
+            console.log(window.ballsMap, ball.id, window.ballsMap[ball.id]);
+            this.game.newStage();
+            inBalls = 0;
+            this.stages++;
+            this.node.color = colors[this.stages % colors.length];
+        }
+        //console.log(ballsMap, gameBalls, inBalls);
     },
     onBeginContact: function (contact, self, other) {
         switch (other.tag) {
             case tagConst.TAG_BALL:
-                this.contackBall(other.node.getComponent("Ball").id)
+                let ball = other.node.getComponent("Ball");
+                if (window.ballsMap[ball.id]) {
+                    inBalls += 1;
+                };
+                this.contackBall(ball);
                 break;
             case tagConst.TAG_BUFF:
                 let buff = other.node.getComponent("Buff");
@@ -122,7 +145,7 @@ cc.Class({
                         this.changeWidthScale(1 / 1.5);
                         //this.scheduleOnce(()=>this.changeLengthScale(1.5), buffTimeOut);
                         break
-                    case buffType.REVERSE: 
+                    case buffType.REVERSE:
                         this.speedScale *= -1.0;
                         //this.scheduleOnce(()=>{this.speedScale *= -1.0}, buffTimeOut);
                         break;
@@ -142,7 +165,7 @@ cc.Class({
         let y = (this.dst.y - this.src.y) / dt;
         let speed = Math.sqrt(x * x + y * y);
         speed = (x > 0 ? this.speedScale : -this.speedScale) * Math.min(speed, maxSpeed);
-        if (this.node.x >= this.node.parent.width + this.node.width / 4 && speed > 0 || this.node.x <= this.node.width / 4 && speed < 0) speed = 0;
+        if (this.node.x >= this.node.parent.width + this.node.width / 4 && speed > 0 || this.node.x <= -this.node.width / 4 && speed < 0) speed = 0;
         this.getComponent(cc.RigidBody).linearVelocity = cc.v2(speed, 0);
     },
 });
