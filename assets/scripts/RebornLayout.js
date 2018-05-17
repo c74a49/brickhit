@@ -56,7 +56,8 @@ cc.Class({
         }
         this.shareLeftTimes = 1;
         //this.shareBtn.active = this.gameCtl.getComponent("wxAddLayer").checkScore();
-        this.shareBtn.active = this.gameCtl.getComponent("wxAddLayer").checkScore();
+        this.shareBtn.active = this.gameCtl.getComponent("wxAddLayer").checkScore() && (getUsrData().gameStartSeconds > 1200);
+        console.log(getUsrData().gameStartSeconds);
         this.adBtn.active = window.flashAd;
         if(!this.shareBtn.active && !this.adBtn.active) {
             this.onSkipBtn();

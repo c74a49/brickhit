@@ -82,6 +82,10 @@ let self;
         this.physicsManager.enabled = true;
         this.brickLayout.reset(this);
         this.brickLayout.newBrickLayout(2);
+
+        window.ballsMap = {};
+        this.ballsMnt.removeAllChildren();
+
         this.player.reset(this);
         //this.rebornCtrl();
     },
@@ -91,7 +95,10 @@ let self;
         //开始逻辑
         window.gameScore = 0;
         window.gameBalls = 0;
+
         window.ballsMap = {};
+        this.ballsMnt.removeAllChildren();
+
         this.brickLayout.reset(this);
         this.brickLayout.newBrickLayout(2);
         this.player.reset(this);

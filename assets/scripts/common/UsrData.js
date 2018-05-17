@@ -27,10 +27,21 @@ var UsrData = cc.Class({
         },
         
         //---------------------------------------------------------------华丽的分割线-----------------------------------------------
+
+        gameStartSeconds:{
+            get(){
+                return (Date.parse(new Date()) - this._data.timestamp) / 1000;
+            },
+        },
     },
     instance: function(){
         let data = getUsrData();
-        this._data = data ? data : defaultData;
+        if(!data){
+            this._data = defaultData;
+            this._data.timestamp = Date.parse(new Date());
+        }
+        else this._data = data;
+        //this._data = data ? data : defaultData;
         return this;
     },
 });

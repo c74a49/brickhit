@@ -57,6 +57,7 @@ cc.Class({
         //this.balls = 0;
         window.inBalls = 0;
         this.stages = 1;
+        this.node.color = colors[this.stages % colors.length];
         //this.clearnState();
         this.touch.on("touchstart", this.onTouchStart, this);
         this.touch.on("touchmove", this.onTouchMove, this);
@@ -84,6 +85,7 @@ cc.Class({
         //this.dst = this.src;
         this.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, 0);
         this.clearnState();
+        this.node.color = colors[0];
         this.touch.off("touchstart", this.onTouchStart, this);
         this.touch.off("touchmove", this.onTouchMove, this);
         this.touch.off("touchend", this.onTouchEnd, this);

@@ -7,7 +7,7 @@
 // Learn life-cycle callbacks:
 //  - [Chinese] http://www.cocos.com/docs/creator/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/editors_and_tools/creator-chapters/scripting/life-cycle-callbacks/index.html
-let name2idx = { "hitBrick": 0, "hitBall": 1, "hitCoin": 2};
+let name2idx = { "hitBrick": 0, "hitBall": 1, "hitCoin": 2, "hitBoom": 3, };
 cc.Class({
     extends: cc.Component,
 

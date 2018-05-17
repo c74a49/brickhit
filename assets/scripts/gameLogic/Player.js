@@ -46,11 +46,11 @@ cc.Class({
         this.paddlePos = this.paddlePos? this.paddlePos:this.paddle.node.getPosition();
         this.game = game;
         this.balls = 0;
-        this.mntNode.removeAllChildren();
+        //this.mntNode.removeAllChildren();
         this.buffMnt.removeAllChildren();
         this.paddle.stop();
         this.paddle.node.setPosition(this.paddlePos);
-        console.log(this.paddle.node.getPosition());
+        //console.log(this.paddle.node.getPosition());
         this.ballNode.active = true;
         this.getInput();
     },

@@ -58,6 +58,7 @@ cc.Class({
     //碰到球
     onContacked: function (other, self) {
         if (this._type == FoodType.TYPE_BOOM) { //炸弹
+            audioManager.play("hitBoom");
             let pos = cc.v2(this.node.x, this.node.y);
             this.node.destroy();
             this.node.parent.getComponent("BrickLayout").destroy4Side(pos);

@@ -17,7 +17,8 @@ function angle2radian(angle) {
     return angle / 180 * Math.PI;
 }
 var common = require("Common");
-let maxSpeed = 2500;
+//let maxSpeed = 2500;
+window.maxSpeed = 1000;
 cc.Class({
     extends: cc.Component,
 
@@ -54,8 +55,9 @@ cc.Class({
         }
     },
     setSpeed : function(x, y){
-        this.speed = cc.v2(x, y);
+        //this.speed = cc.v2(x, y);
         this.id = common.getIdentifier();
+        this.getComponent(cc.RigidBody).linearVelocity = cc.v2(x, y);
     },
     ctor: function(){
         //this.id = common.getIdentifier();
@@ -72,7 +74,7 @@ cc.Class({
         return this.spriteFrames[data.dress];
     },*/
     onEnable: function () {
-        this.getComponent(cc.RigidBody).linearVelocity = this.speed;
+        //this.getComponent(cc.RigidBody).linearVelocity = this.speed;
     },
     onDisable : function() {
         //this.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, 0);
@@ -81,10 +83,11 @@ cc.Class({
         
         let x = this.getComponent(cc.RigidBody).linearVelocity.x;
         let y = this.getComponent(cc.RigidBody).linearVelocity.y;
-        if(Norm(x, y) >= maxSpeed){
+        //if(Norm(x, y) >= maxSpeed){
             let speedVec = common.normalizev([x, y]).map((a)=>a * maxSpeed);
             this.getComponent(cc.RigidBody).linearVelocity = cc.v2(speedVec[0], speedVec[1]);
-        }
+            //console.log(speedVec, this.getComponent(cc.RigidBody).linearVelocity)
+        //}
         /*
         if (Math.abs(Math.atan(y / x)) < 0.01) {
             this.setDirection(cc.v2(x, Math.tan(angle2radian(angle)) * x));
