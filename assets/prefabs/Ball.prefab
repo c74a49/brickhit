@@ -105,7 +105,7 @@
     "_enabled": true,
     "_type": 2,
     "_allowSleep": true,
-    "_gravityScale": 0.02,
+    "_gravityScale": 0,
     "_linearDamping": 0,
     "_angularDamping": 0,
     "_linearVelocity": {
@@ -154,9 +154,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "218cc734-269f-4f42-8a02-0fb2ca875885"
+      "__id__": 0
     },
-    "fileId": "65xTIBpXFB2pDu4zOhUs1f",
+    "fileId": "2cxzkB4INHyo240ZOECOlM",
     "sync": false
   }
 ]

@@ -10,7 +10,7 @@
 
 let UsrData = require("UsrData");
 
-window.console.log = function(){};
+//window.console.log = function(){};
 window.bannerAd = false;
 window.flashAd = true;
 //小包关闭视频激励广告

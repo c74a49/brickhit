@@ -104,14 +104,15 @@ let self;
         this.player.reset(this);
         //this.rebornCtrl();
     },
-    newStage: function(){
+    newStage: function(success){
         if(!this.flg) return;
         this.flg = false;
         let repeat = 1;
         window.ballsMap = {};
         this.ballsMnt.children.map((node) => window.ballsMap[node.getComponent("Ball").id] = true);
         if(this.brickLayout.newBrickLayout(repeat)) this.rebornCtrl();
-        window.gameScore += repeat;
+        window.gameScore += 1;
+        if(typeof success == "function") success();
     },
     stopGame: function(){
         cc.director.loadScene('over');

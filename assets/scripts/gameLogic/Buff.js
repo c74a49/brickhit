@@ -8,7 +8,7 @@
 //  - [Chinese] http://www.cocos.com/docs/creator/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/editors_and_tools/creator-chapters/scripting/life-cycle-callbacks/index.html
 const buffType = require("Const").BUFF_TYPE;
-var head = (arr)=>arr[0];
+var head = (arr)=>arr.slice(0, 1)[0];
 var tail = (arr)=>arr.slice(1);
 const pList = [
     [

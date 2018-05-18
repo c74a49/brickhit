@@ -24,7 +24,7 @@ var map = (f, arr) => arr.map(f);
 //compose :: (b -> c) -> (a -> b) -> (a -> c)
 var compose = (fbc, fab) => ((a) => fbc(fab(a)));
 //head:: [a] -> a
-var head = (arr) => arr[0];
+var head = (arr) => arr.slice(0, 1)[0];
 //tail:: [a] -> [a]
 var tail = (arr) => arr.slice(1);
 //sum:: Number -> [Number] -> Number

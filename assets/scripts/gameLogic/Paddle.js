@@ -120,12 +120,13 @@ cc.Class({
         ball.getComponent(cc.Sprite).spriteFrame = this.ballSpriteFrames[this.stages % this.ballSpriteFrames.length];
         if (window.gameBalls > 0 && inBalls >= window.gameBalls) {
             console.log(window.ballsMap, ball.id, window.ballsMap[ball.id]);
-            this.game.newStage();
-            inBalls = 0;
-            this.stages++;
-            this.node.color = colors[this.stages % colors.length];
+            this.game.newStage(()=>{
+                window.inBalls = 0;
+                this.stages++;
+                this.node.color = colors[this.stages % colors.length];
+            });
+            
         }
-        //console.log(ballsMap, gameBalls, inBalls);
     },
     onBeginContact: function (contact, self, other) {
         switch (other.tag) {
@@ -135,6 +136,8 @@ cc.Class({
                     inBalls += 1;
                 };
                 this.contackBall(ball);
+
+                let vec = common.normalizev(ball.getSpeedv());
                 break;
             case tagConst.TAG_BUFF:
                 let buff = other.node.getComponent("Buff");

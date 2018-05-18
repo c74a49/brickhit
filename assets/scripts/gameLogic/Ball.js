@@ -12,7 +12,7 @@ function dot() {
         sum += arguments[i] * arguments[i + length];
     }
 };
-let angle = 3;
+let angle = 5;
 function angle2radian(angle) {
     return angle / 180 * Math.PI;
 }
@@ -54,13 +54,18 @@ cc.Class({
                 //other.node.getComponent("Brick").onContacked();
         }
     },
-    setSpeed : function(x, y){
+    setSpeed : function(x, y){//设置速度方向
         //this.speed = cc.v2(x, y);
-        this.id = common.getIdentifier();
-        this.getComponent(cc.RigidBody).linearVelocity = cc.v2(x, y);
+        let speedVec = common.normalizev([x, y]).map((a)=>a * maxSpeed);
+        this.getComponent(cc.RigidBody).linearVelocity = cc.v2(speedVec[0], speedVec[1]);
+        //this.getComponent(cc.RigidBody).linearVelocity = cc.v2(x, y);
+    },
+    getSpeedv: function(){
+        let v2 = this.getComponent(cc.RigidBody).linearVelocity
+        return [v2.x, v2.y];
     },
     ctor: function(){
-        //this.id = common.getIdentifier();
+        this.id = common.getIdentifier();
     },
     onLoad : function() {
         this.node.group = "ball";
@@ -68,16 +73,9 @@ cc.Class({
         
     },
 
-    /*
-    getSpriteFrame: function(){
-        let data = getUsrData();
-        return this.spriteFrames[data.dress];
-    },*/
     onEnable: function () {
-        //this.getComponent(cc.RigidBody).linearVelocity = this.speed;
     },
     onDisable : function() {
-        //this.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, 0);
     },
     update: function () {
         
@@ -88,12 +86,12 @@ cc.Class({
             this.getComponent(cc.RigidBody).linearVelocity = cc.v2(speedVec[0], speedVec[1]);
             //console.log(speedVec, this.getComponent(cc.RigidBody).linearVelocity)
         //}
-        /*
+        
         if (Math.abs(Math.atan(y / x)) < 0.01) {
-            this.setDirection(cc.v2(x, Math.tan(angle2radian(angle)) * x));
+            this.setSpeed(x, Math.tan(angle2radian(angle)) * x);
         }
-        else this.setDirection(cc.v2(x, y));
-        */
+        else this.setSpeed(x, y);
+        
     },
     onDestroy: function () {
         //cc.audioEngine.stop(this.current);

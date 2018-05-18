@@ -129,6 +129,7 @@ cc.Class({
         newBall.active = true;
         window.gameBalls += 1;
         window.ballsMap[newBall.getComponent("Ball").id] = true;
+        //console.log(window.ballsMap[newBall.getComponent("Ball").id]);
         this.paddle.reset(this.game);
     },
 
