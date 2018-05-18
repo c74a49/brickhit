@@ -119,7 +119,7 @@ cc.Class({
         window.ballsMap[ball.id] = false;
         ball.getComponent(cc.Sprite).spriteFrame = this.ballSpriteFrames[this.stages % this.ballSpriteFrames.length];
         if (window.gameBalls > 0 && inBalls >= window.gameBalls) {
-            console.log(window.ballsMap, ball.id, window.ballsMap[ball.id]);
+            //console.log(window.ballsMap, ball.id, window.ballsMap[ball.id]);
             this.game.newStage(()=>{
                 window.inBalls = 0;
                 this.stages++;
@@ -137,7 +137,6 @@ cc.Class({
                 };
                 this.contackBall(ball);
 
-                let vec = common.normalizev(ball.getSpeedv());
                 break;
             case tagConst.TAG_BUFF:
                 let buff = other.node.getComponent("Buff");

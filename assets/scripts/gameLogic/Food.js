@@ -28,6 +28,7 @@ cc.Class({
         //         this._bar = value;
         //     }
         // },
+        sprite: cc.Sprite,
         spriteFrame: {
             default: [],
             type: [cc.SpriteFrame],
@@ -52,7 +53,8 @@ cc.Class({
     },
     init: function (_type) {
         this._type = _type;
-        let sprite = this.node.getComponent(cc.Sprite);
+        //let sprite = this.node.getComponent(cc.Sprite);
+        let sprite = this.sprite;
         sprite.spriteFrame = this.spriteFrame[_type - 1];
     },
     //碰到球
@@ -95,6 +97,9 @@ cc.Class({
             this.node.destroy();
         }
         else { }
+    },
+    onDestroy(){
+        window.gameScore1 += 1;
     },
 
     start :function() {

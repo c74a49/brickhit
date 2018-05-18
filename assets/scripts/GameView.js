@@ -12,10 +12,12 @@ cc.Class({
         //
     },
     update:function(){
-        this.updateScore(gameScore);
+        //this.updateScore(gameScore);
+        this.updateScore(gameScore1);
     },
     start: function () {
-        this.scoreLabel.string = window.gameScore;
+        this.updateScore(gameScore1);
+        this.updateBest(this.wxAddLayer.getScore());
         //this.help4Gold.active = this.wxAddLayer.checkScore();
         this.help4Gold.active = false;
     },
@@ -26,6 +28,6 @@ cc.Class({
         //this.goldLabel.string = val;
     },
     updateBest: function (val) {
-        //this.bestLabel.string = val;
+        this.bestLabel.string = val;
     },
 });

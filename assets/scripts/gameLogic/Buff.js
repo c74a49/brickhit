@@ -14,27 +14,27 @@ const pList = [
     [
         /*[buffType.LANG15 ] = */80,
         /*[buffType.SHOT15 ] = */10,
-        /*[buffType.REVERSE] = */10,
+        /*[buffType.REVERSE] = */0 ,
+    ],
+    [
+        /*[buffType.LANG15 ] = */70,
+        /*[buffType.SHOT15 ] = */20,
+        /*[buffType.REVERSE] = */0 ,
+    ],
+    [
+        /*[buffType.LANG15 ] = */60,
+        /*[buffType.SHOT15 ] = */40,
+        /*[buffType.REVERSE] = */ 0,
     ],
     [
         /*[buffType.LANG15 ] = */50,
-        /*[buffType.SHOT15 ] = */40,
-        /*[buffType.REVERSE] = */10,
+        /*[buffType.SHOT15 ] = */50,
+        /*[buffType.REVERSE] = */ 0,
     ],
     [
         /*[buffType.LANG15 ] = */30,
-        /*[buffType.SHOT15 ] = */50,
-        /*[buffType.REVERSE] = */20,
-    ],
-    [
-        /*[buffType.LANG15 ] = */20,
-        /*[buffType.SHOT15 ] = */50,
-        /*[buffType.REVERSE] = */30,
-    ],
-    [
-        /*[buffType.LANG15 ] = */10,
         /*[buffType.SHOT15 ] = */55,
-        /*[buffType.REVERSE] = */35,
+        /*[buffType.REVERSE] = */0 ,
     ],
 ];
 var getType = function (score) {

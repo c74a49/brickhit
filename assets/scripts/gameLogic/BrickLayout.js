@@ -98,6 +98,8 @@ cc.Class({
                     return node;
                 }
             }
+            let hpSetting = [1, 2, 3, 7, 12]
+            let idx = Math.floor(score / 30);
             for (let i = 0; i < this.bricksNumber; i++) {
 
                 //if(this.ceng % 10 == 1 || this.ceng % 10 == 2) break;
@@ -106,6 +108,8 @@ cc.Class({
 
                 let rand2 = cc.random0To1();
                 let hp = 1;
+                if(idx + 1 > hpSetting.length) hp = hpSetting[hpSetting.length - 1];
+                else hp = hpSetting[idx] + Math.floor(rand2 * (hpSetting[idx + 1] - hpSetting[idx]));
 
                 //特殊处理 必须出块
                 if (ceng <= 2 && this.map[(ceng - 1) * this.bricksNumber + i]) {
@@ -131,12 +135,8 @@ cc.Class({
                         let _type = foodType.TYPE_BUFF;
                         if (rand > 0.96) {
                             _type = foodType.TYPE_BOOM;
-                            //_type = foodType.TYPE_BUFF;
-                            //金币类型块  先屏蔽
-                            //brickNode.destroy();
-                            //continue;
                         }
-                        else if (rand > 0.92) (_type = foodType.TYPE_BALL) && ballCnt++;
+                        else if (rand > 0.91) (_type = foodType.TYPE_BALL) && ballCnt++;
                         //else ballCnt++;
                         if (_type == foodType.TYPE_ADDBALLS1 && ballCnt > ballMax) {
                             brickNode.destroy();
@@ -160,25 +160,10 @@ cc.Class({
                 }
             }
         }
-        /*
-        this.cnt = 0;
-        if(this.node.children.length <= 0) //判空，
-            this.scheduleOnce(function(){this.moveFinished.call(this)}, timeOut);
-        else {  */
+
         let down = repeat;
         let over = false;
-        /*
-        this.node.children.map((node)=>{
-            let pos = this.node.convertToWorldSpaceAR(node.getPosition());
-            let death = this.line.parent.convertToWorldSpaceAR(this.line.getPosition()).y;
-            let left = Math.floor((pos.y - death) / (this.nodeHeight + this.spacing) + 0.5);
-            if(node.getComponent("Brick")){ //砖块
-                down = Math.min(left, down);
-                if(left <= repeat) over = true;
-            } else if(left < repeat) return node;
 
-        }).map((node)=>{if(node) node.destroy()});
-        */
         this.node.children.map((node) => {
             let pos = this.node.convertToWorldSpaceAR(node.getPosition());
             let death = this.line.parent.convertToWorldSpaceAR(this.line.getPosition()).y;
@@ -192,36 +177,15 @@ cc.Class({
             let death = this.line.parent.convertToWorldSpaceAR(this.line.getPosition()).y;
 
             let finished = cc.callFunc(function (obj, target) {
-                /*
-                this.cnt += 1;
-                //if (this.cnt == target) {
-                if (this.cnt == 1) {
-                    //console.log("finished");
-                    this.moveFinished.call(this);
-                }*/
+
             }, this, this.node.children.length);
             let action = cc.sequence(cc.moveBy(timeOut * down / repeat, cc.p(0, -(this.nodeHeight + this.spacing) * down)), finished);
-            //console.log(node.height + this.spacing);
-            //let action = cc.sequence(cc.moveBy(2, cc.p(0, - 100)), finished);
             node.runAction(action);
         });
         return over;
         //}
     },
-    /*
-    moveFinished: function () {
-        for (let i = 0; i < this.node.children.length; i++) {
-            let node = this.node.children[i];
-            let pos = this.node.convertToWorldSpaceAR(node.getPosition());
-            let death = this.line.parent.convertToWorldSpaceAR(this.line.getPosition()).y;
-            if (pos.y < death) {
-                this.gameCtl.reBornCtrl();
-                return;
-            }
-        }
-        this.gameCtl.onNewBrickLayout();
-    },
-    */
+    
 
     //then, fp
     destroyNode: function (node) {

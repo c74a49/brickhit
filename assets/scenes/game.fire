@@ -568,7 +568,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 226.4
+      "y": 154
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3528,7 +3528,9 @@
     "scoreLabel": {
       "__id__": 50
     },
-    "bestLabel": null,
+    "bestLabel": {
+      "__id__": 55
+    },
     "goldLabel": {
       "__id__": 42
     },

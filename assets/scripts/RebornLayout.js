@@ -47,9 +47,9 @@ cc.Class({
         this.reborned += 1;
         this.gameCtl.reborn()
     },
-    show: function (score) {
+    show: function () {
         this.node.active = true;
-        this.scoreLabel.string = score;
+        this.scoreLabel.string = window.gameScore1;
         if (this.reborned >= 2) {
             this.onSkipBtn(); 
             return;

@@ -3,8 +3,9 @@
 let common = require("Common");
 let Const = require("Const");
 
-window.gameScore = 0;
-window.gameBalls = 0;
+window.gameScore = 0;   //记录层数/结束时用于传递最终分数
+window.gameBalls = 0;   //总球数
+window.gameScore1 = 0;  //记录分数
 
 let self;
  cc.Class({
@@ -58,6 +59,7 @@ let self;
     init: function () {
         window.gameBalls = 0;
         window.gameScore = 0;
+        window.gameScore1 = 0;
         this.physicsManager.enabled = true;
         //this.gameView.updateScore(gameScore);
         this.flg = false;
@@ -73,7 +75,7 @@ let self;
     rebornCtrl: function () { 
         //重生控制逻辑
         this.physicsManager.enabled = false;
-        this.rebornLayout.show(gameScore);
+        this.rebornLayout.show();
     },
     reborn: function () {
         //重生逻辑
@@ -82,6 +84,7 @@ let self;
         this.physicsManager.enabled = true;
         this.brickLayout.reset(this);
         this.brickLayout.newBrickLayout(2);
+        window.gameScore += 2;
 
         window.ballsMap = {};
         this.ballsMnt.removeAllChildren();
@@ -93,14 +96,16 @@ let self;
         this.init();
         this.showBannerAd();
         //开始逻辑
-        window.gameScore = 0;
-        window.gameBalls = 0;
+        window.gameScore    = 0;
+        window.gameBalls    = 0;
+        window.gameScore1   = 0;
 
         window.ballsMap = {};
         this.ballsMnt.removeAllChildren();
 
         this.brickLayout.reset(this);
         this.brickLayout.newBrickLayout(2);
+        window.gameScore += 2;
         this.player.reset(this);
         //this.rebornCtrl();
     },
@@ -111,19 +116,16 @@ let self;
         window.ballsMap = {};
         this.ballsMnt.children.map((node) => window.ballsMap[node.getComponent("Ball").id] = true);
         if(this.brickLayout.newBrickLayout(repeat)) this.rebornCtrl();
-        window.gameScore += 1;
+        window.gameScore += repeat;
         if(typeof success == "function") success();
     },
     stopGame: function(){
+        window.gameScore = window.gameScore1;
         cc.director.loadScene('over');
     },
 
-    addScore1: ()=>{
-        gameScore += 1;
-        self.gameView.updateScore(gameScore);
-    },
     dbSetScore: function (score) {
-        this.wxAddLayout.setScore(score)
+        this.wxAddLayout.setScore(window.gameScore1)
     },
     dbGetScore: function () {
         return this.wxAddLayout.getScore();

@@ -12,13 +12,15 @@ function dot() {
         sum += arguments[i] * arguments[i + length];
     }
 };
-let angle = 5;
+let angle = 10;
+let modifyv = [1, 1];    //标准修正向量
 function angle2radian(angle) {
     return angle / 180 * Math.PI;
 }
 var common = require("Common");
+var physicTag = require("Const").PHYSICIS_TAG;
 //let maxSpeed = 2500;
-window.maxSpeed = 1000;
+window.maxSpeed = 900;
 cc.Class({
     extends: cc.Component,
 
@@ -34,24 +36,37 @@ cc.Class({
 
     onBeginContact:function(contact, self, other) {
         switch (other.tag) {
-            case 1://球碰到砖块
+            case physicTag.TAG_BRICK://球碰到砖块
                 other.node.getComponent("Brick").onContacked();
                 audioManager.play("hitBrick", true);
                 //this.gameCtl.onBallContactBrick(self.node, other.node);
                 break;
-            case 2://球碰到地面
+            case physicTag.TAG_GROUND://球碰到地面
                 //this.gameCtl.onBallContactGround(self.node, other.node);
                 break;
-            case 3://球碰到托盘
+            case physicTag.TAG_PADDLE://球碰到托盘
                 //this.gameCtl.onBallContactPaddle(self.node, other.node);
                 break;
-            case 4://球碰到墙
+            case physicTag.TAG_PADDLE://球碰到墙
                 //this.gameCtl.onBallContactWall(self.node, other.node);
                 break;
-            case 5:
+            case physicTag.TAG_FOOD:
                 //console.log("touch food");
                 other.node.getComponent("Food").onContacked(self, other);
                 //other.node.getComponent("Brick").onContacked();
+        }
+    },
+    onEndContact: function(contack, self, other){
+        switch (other.tag) {
+            case physicTag.TAG_PADDLE://paddle
+                let vec1 = common.normalizev(this.getSpeedv());
+                vec1[1] = Math.abs(vec1[1]);
+                if(vec1[1] > 0){
+                    let _vec = common.normalizev(modifyv);
+                    _vec[0] *= (vec1[0] > 0 ? 1 : -1); //修正向量
+                    this.setSpeed(vec1[0] + _vec[0], vec1[1] + _vec[1]);
+                }
+                break;
         }
     },
     setSpeed : function(x, y){//设置速度方向

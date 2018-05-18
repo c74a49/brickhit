@@ -26,10 +26,11 @@ cc.Class({
 		this.show()
 	},
 
-	show: function (score) {
-		this.scoreLabel.string = gameScore;
+	show: function () {
+		this.scoreLabel.string = window.gameScore;
 		//上传分数
-		this.wxAddLayer.setScore(gameScore);
+		console.log("push score ", window.gameScore);
+		this.wxAddLayer.setScore(window.gameScore);
 		this.bestLabel.string = this.wxAddLayer.getScore();
 		//for check 
 		//this.share4Gold.active 	= this.wxAddLayer.checkScore();

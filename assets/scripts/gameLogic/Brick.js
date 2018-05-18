@@ -163,14 +163,13 @@ cc.Class({
         this.hpDisplay.node.rotation = -this.hpDisplay.node.parent.rotation;
         //this.updateDisplay(true);
     },
-    onContacked: function() {
+    onContacked: function(dhp = 1) {
         //audioManager.play("contackAudio")
-        this.hp -= 1;
+        let addScore = Math.min(dhp, this.hp);
+        window.gameScore1 += addScore;
+        this.hp -= dhp;
         if (this.hp <= 0){
             this.broken();
-            //this.node.active = false;
-            //this.node.removeFromParent();
-            //this.scheduleOnce(function () { this.node.destroy() }, 0.5);
             return;
         }
         //this.updateDisplay();
@@ -180,6 +179,9 @@ cc.Class({
         this.node.destroy();
     },
     start :function () {
+    },
+    onDestroy: function(){
+        window.gameScore1 += this.hp;
     },
 
     update: function (dt) {
