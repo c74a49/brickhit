@@ -8,7 +8,7 @@
 //  - [Chinese] http://www.cocos.com/docs/creator/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/editors_and_tools/creator-chapters/scripting/life-cycle-callbacks/index.html
 
-let UsrData = require("UsrData");
+//let UsrData = require("UsrData");
 
 window.console.log = function(){};
 window.bannerAd = false;
@@ -43,6 +43,8 @@ cc.Class({
         if (cc.sys.platform == cc.sys.WECHAT_GAME) {
             window.WECHAT_ANDROID = wx.getSystemInfoSync().system.toLowerCase().indexOf("android") != -1
         }
+        getUsrData();
+        getVersionData();
     },
     // use this for initialization
     onLoad: function () {

@@ -7,39 +7,28 @@
 // Learn life-cycle callbacks:
 //  - [Chinese] http://www.cocos.com/docs/creator/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/editors_and_tools/creator-chapters/scripting/life-cycle-callbacks/index.html
+
 var common = require("Common");
 var Const = require("Const");
-var getUsrData = ()     =>common.getStorageSync(Const.usrData);
-var setUsrData = (val)  =>common.setStorageSync(Const.usrData, val);
-let defaultData = {sound: true};
-var UsrData = cc.Class({
+var getVersionData = ()     =>common.getStorageSync(Const.version);
+var setVersionData = (val)  =>common.setStorageSync(Const.version, val);
+let defaultData = {};
+var VersionData = cc.Class({
     properties:{
         //本地存储
-        sound: {
-            get(){
-                //向前兼容
-                return typeof this._data.sound != typeof defaultData.sound  ? defaultData.sound : this._data.sound;
-            },
-            set(val){
-                this._data.sound = val;
-                setUsrData(this._data);
-            },
-        },
-        
-        //---------------------------------------------------------------华丽的分割线-----------------------------------------------
 
-        gameStartSeconds:{
+        versionStartSeconds:{
             get(){
                 return (Date.parse(new Date()) - this._data.timestamp) / 1000;
             },
         },
     },
     instance: function(){
-        let data = getUsrData();
+        let data = getVersionData();
         if(!data){
             this._data = defaultData;
             this._data.timestamp = Date.parse(new Date());
-            setUsrData(this._data);
+            setVersionData(this._data);
         }
         else this._data = data;
         //this._data = data ? data : defaultData;
@@ -49,8 +38,8 @@ var UsrData = cc.Class({
 var self;
 
 //单例
-window.getUsrData = () => {
+window.getVersionData = () => {
     if(self != undefined) return self;
-    self = new UsrData();
+    self = new VersionData();
     return self.instance();
 };

@@ -69,7 +69,7 @@ cc.Class({
             audioManager.play("hitBall");
             let newBall = cc.instantiate(this.ballPrefab);
             let rand = cc.random0To1();
-            let alpha = rand * Math.PI;
+            let alpha = rand * Math.PI / 2 + Math.PI / 4;
             newBall.getComponent("Ball").setSpeed(startSpeed* Math.cos(alpha), startSpeed*Math.sin(alpha));
             let pos = this.node.parent.convertToWorldSpaceAR(this.node.getPosition());
             let mntNode = cc.find("Canvas/gameLogic/mntNode");
@@ -86,8 +86,9 @@ cc.Class({
             window.inBalls += window.ballsMap[newBall.getComponent("Ball").id] ? 0 : 1;
         }
         else if(this._type == FoodType.TYPE_BUFF) { //buff
+            audioManager.play("hitCoin");
             let newBuff = cc.instantiate(this.buffPrefab);
-            newBuff.getComponent("Buff").init();
+            newBuff.getComponent("Buff").init(window.gameScore);
             let pos = this.node.parent.convertToWorldSpaceAR(this.node.getPosition());
             let mntNode = cc.find("Canvas/gameLogic/buffMntNode");
             pos = mntNode.convertToNodeSpaceAR(pos);

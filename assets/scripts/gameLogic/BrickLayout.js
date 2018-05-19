@@ -1,4 +1,5 @@
 let timeOut = 0.5;
+let ballLimit = 20;
 
 var map = (f, arr) => arr.map(f);
 var compose = (f1, f2) => (x) => f1(f2(x));
@@ -36,6 +37,9 @@ cc.Class({
         let pos = cc.p(this.node.width / 2, -this.node.height / 2);
         return this.node.convertToWorldSpaceAR(pos);
     },
+    onLoad : function(){
+        this.ceng = 0;
+    },
 
     reset: function (ctl) {
         this.node.removeAllChildren();
@@ -46,16 +50,28 @@ cc.Class({
         brickNode.destroy();
         brickNode = null;
         this.gameCtl = ctl;
-        this.ceng = 0;
         //this.newBrickLayout();
+        this.ceng = 0;
     },
     newBrickLayout: function (repeat) {
         let self = this;
+
+        let special = 0;
+        //let ballCnt = 0;
+        //let boomCnt = 0;
+        //let buffCnt = 0;
+        //const ballMax = 3;
+        //const boomMax = 1;
+        //const buffMax = 2;
         for (var j = 0; j < repeat; j++) {
             let yoffset = j * (this.spacing + this.nodeHeight);
             let score = window.gameScore + j;
             let ballCnt = 0;
-            const ballMax = 3;
+            let boomCnt = 0;
+            let buffCnt = 0;
+            const ballMax = score < 30 ? 3 : (score < 80 ? 2 : 1)
+            const boomMax = 1;
+            const buffMax = 2;
             let pleft = (score < 10) ? 0.0 : 0.02;
 
             let poff = (score < 20) ? 0.05 : 0.0;
@@ -83,9 +99,10 @@ cc.Class({
                 setMap(random);
             }
             var getBrickLimit = function () {
-                if (ceng < 20) return 3;
-                if (ceng < 50) return 4;
-                if (ceng < 100) return 5;
+                if (score < 10) return 2;
+                if (score < 30) return 3;
+                if (score < 60) return 4;
+                if (score < 100) return 5;
             }
             var getBrickPrefabNode = function () {
                 let rand = cc.random0To1();
@@ -110,7 +127,7 @@ cc.Class({
                 let hp = 1;
                 if(idx + 1 > hpSetting.length) hp = hpSetting[hpSetting.length - 1];
                 else hp = hpSetting[idx] + Math.floor(rand2 * (hpSetting[idx + 1] - hpSetting[idx]));
-
+                /*
                 //特殊处理 必须出块
                 if (ceng <= 2 && this.map[(ceng - 1) * this.bricksNumber + i]) {
                     //出块数量控制
@@ -125,6 +142,27 @@ cc.Class({
                     brickNode.y = yoffset - this.spacing - this.nodeHeight / 2;
                     brickCnt++;
                     continue;
+                }*/
+                //特殊处理 必出一个分裂球，和一个加长buff
+                if (ceng <= 2 && this.map[(ceng - 1) * this.bricksNumber + i]) {
+                    let brickNode = cc.instantiate(this.foodPrefab);
+                    let _type;
+                    if(special == 0) {
+                        _type = foodType.TYPE_BALL
+                        ballCnt++;
+                    }
+                    else if(special == 1){
+                        _type = foodType.TYPE_BUFF;
+                        buffCnt++;
+                    }
+                    else;
+                    special++;
+                    brickNode.getComponent("Food").init(_type);
+                    brickNode.parent = this.node;
+                    brickNode.x = this.padding + (i % this.cols) * (this.nodeWidth + this.padding) + this.nodeWidth / 2;
+                    brickNode.y = yoffset - this.spacing - this.nodeHeight / 2;
+                    //brickCnt++;
+                    continue;
                 }
 
                 if (rand > 0.45 + pleft + poff) {
@@ -135,10 +173,14 @@ cc.Class({
                         let _type = foodType.TYPE_BUFF;
                         if (rand > 0.96) {
                             _type = foodType.TYPE_BOOM;
+                            boomCnt++;
                         }
                         else if (rand > 0.91) (_type = foodType.TYPE_BALL) && ballCnt++;
+                        else buffCnt++;
                         //else ballCnt++;
-                        if (_type == foodType.TYPE_ADDBALLS1 && ballCnt > ballMax) {
+                        if ((_type == foodType.TYPE_BALL && (ballCnt > ballMax || window.gameBalls > ballLimit))|| 
+                            (_type == foodType.TYPE_BOOM && (boomCnt > boomMax)) || 
+                            (_type == foodType.TYPE_BUFF && (buffCnt > buffMax))) {
                             brickNode.destroy();
                             continue;
                         }

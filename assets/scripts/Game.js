@@ -81,13 +81,13 @@ let self;
         //重生逻辑
         //window.gameScore = 0;
         window.gameBalls = 0;
-        this.physicsManager.enabled = true;
         this.brickLayout.reset(this);
         this.brickLayout.newBrickLayout(2);
         window.gameScore += 2;
 
         window.ballsMap = {};
         this.ballsMnt.removeAllChildren();
+        this.physicsManager.enabled = true;
 
         this.player.reset(this);
         //this.rebornCtrl();

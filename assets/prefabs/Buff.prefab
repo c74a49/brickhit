@@ -155,7 +155,7 @@
         "__uuid__": "559749d7-ea9c-4f97-816e-69ff1d9f2385"
       },
       {
-        "__uuid__": "595bd781-5560-4f9c-8447-80c1048cbcd2"
+        "__uuid__": "dc1bd60e-bf9e-45dc-9b0e-77ae566ffa3a"
       }
     ]
   },
@@ -165,9 +165,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "017a4bdb-0947-4bb9-a8f5-e6f47129fb68"
+      "__id__": 0
     },
-    "fileId": "6eLqq+XLpCL5F94YyXGlJm",
+    "fileId": "a1YfSRx+ZDupsOUNso2/C0",
     "sync": false
   }
 ]

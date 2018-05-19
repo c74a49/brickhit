@@ -50,7 +50,7 @@ cc.Class({
         this.buffMnt.removeAllChildren();
         this.paddle.stop();
         this.paddle.node.setPosition(this.paddlePos);
-        //console.log(this.paddle.node.getPosition());
+        console.log("set paddle position#################", this.paddle.node.getPosition(), "------", this.paddlePos);
         this.ballNode.active = true;
         this.getInput();
     },

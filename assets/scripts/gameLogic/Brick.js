@@ -128,7 +128,9 @@ cc.Class({
 
     updateDisplay:function(force){
         let hp = this.hp;
-        this.hpDisplay.string =  this.hp.toString();
+        this.hpDisplay.string =  hp.toString();
+        this.hpDisplay.node.active = (hp > 1);
+        /*
         if (!force && hp % Tms != (Tms - 1)) return;  //优化处理，颜色不变
 
         let norm = 255;
@@ -153,6 +155,7 @@ cc.Class({
         this.node.color = cc.color(RGB[0], RGB[1], RGB[2]);
         if(Math.floor(hp / Tms) == 0) this.node.color = cc.color(79, 207, 222);
         //this.node.color = this.colorFunc(hp);
+        */
     },
     onLoad : function () {
     },
@@ -161,7 +164,7 @@ cc.Class({
         this.hp = hp;
         //this.colorFunc = getColorFunc();
         this.hpDisplay.node.rotation = -this.hpDisplay.node.parent.rotation;
-        //this.updateDisplay(true);
+        this.updateDisplay(true);
     },
     onContacked: function(dhp = 1) {
         //audioManager.play("contackAudio")
@@ -172,7 +175,7 @@ cc.Class({
             this.broken();
             return;
         }
-        //this.updateDisplay();
+        this.updateDisplay();
     },
     broken: function(){
         this.node.stopAllActions();

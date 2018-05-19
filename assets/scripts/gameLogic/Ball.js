@@ -59,6 +59,9 @@ cc.Class({
     onEndContact: function(contack, self, other){
         switch (other.tag) {
             case physicTag.TAG_PADDLE://paddle
+                let y1 = self.node.parent.convertToWorldSpaceAR(self.node.getPosition()).y;
+                let y2 = other.node.parent.convertToWorldSpaceAR(other.node.getPosition()).y;
+                if(y1 < y2) return;
                 let vec1 = common.normalizev(this.getSpeedv());
                 vec1[1] = Math.abs(vec1[1]);
                 if(vec1[1] > 0){
@@ -68,6 +71,7 @@ cc.Class({
                 }
                 break;
         }
+        this.updateSpeed();
     },
     setSpeed : function(x, y){//设置速度方向
         //this.speed = cc.v2(x, y);
@@ -92,7 +96,7 @@ cc.Class({
     },
     onDisable : function() {
     },
-    update: function () {
+    updateSpeed: function () {
         
         let x = this.getComponent(cc.RigidBody).linearVelocity.x;
         let y = this.getComponent(cc.RigidBody).linearVelocity.y;
@@ -101,12 +105,14 @@ cc.Class({
             this.getComponent(cc.RigidBody).linearVelocity = cc.v2(speedVec[0], speedVec[1]);
             //console.log(speedVec, this.getComponent(cc.RigidBody).linearVelocity)
         //}
-        
-        if (Math.abs(Math.atan(y / x)) < 0.01) {
-            this.setSpeed(x, Math.tan(angle2radian(angle)) * x);
+        if (Math.abs(Math.atan(y / x)) < angle2radian(angle)) {
+            this.setSpeed(x, (y / x > 0 ? 1 : -1) * Math.tan(angle2radian(angle))* x);
         }
         else this.setSpeed(x, y);
         
+    },
+    update: function(){
+        //this.updateSpeed();
     },
     onDestroy: function () {
         //cc.audioEngine.stop(this.current);

@@ -9,6 +9,7 @@
 //  - [English] http://www.cocos2d-x.org/docs/editors_and_tools/creator-chapters/scripting/life-cycle-callbacks/index.html
 
 module.exports = {
+    version: "v0.1.1",
     coinsKey: "coins",
     bestKey: "bestScore",
     usrData: "usrData",

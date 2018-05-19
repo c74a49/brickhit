@@ -1309,7 +1309,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "682e866a-08b6-487d-8d9b-febabb784dc6"
+      "__uuid__": "dd06ddab-0123-477f-a4bc-23f7717d11f6"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -2088,7 +2088,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 88,
+      "width": 66,
       "height": 22
     },
     "_rotationX": 0,
@@ -2123,7 +2123,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
-    "_N$string": "本周最高",
+    "_N$string": "最高分",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -3603,10 +3603,10 @@
         "__uuid__": "d0d598b7-50cc-4078-94cd-3f153346a33b"
       },
       {
-        "__uuid__": "836937ec-87c4-4e15-af8c-dd1b699406b8"
+        "__uuid__": "6ab0f67b-9732-4422-8019-2a58f9920f86"
       },
       {
-        "__uuid__": "6ab0f67b-9732-4422-8019-2a58f9920f86"
+        "__uuid__": "836937ec-87c4-4e15-af8c-dd1b699406b8"
       },
       {
         "__uuid__": "38937f62-2bfb-4538-a105-b44f505a3acc"

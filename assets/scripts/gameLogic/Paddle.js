@@ -169,7 +169,8 @@ cc.Class({
         let y = (this.dst.y - this.src.y) / dt;
         let speed = Math.sqrt(x * x + y * y);
         speed = (x > 0 ? this.speedScale : -this.speedScale) * Math.min(speed, maxSpeed);
-        if (this.node.x >= this.node.parent.width + this.node.width / 4 && speed > 0 || this.node.x <= -this.node.width / 4 && speed < 0) speed = 0;
+        //if (this.node.x >= this.node.parent.width + this.node.width / 4 && speed > 0 || this.node.x <= -this.node.width / 4 && speed < 0) speed = 0;
+        if (this.node.x >= this.node.parent.width && speed > 0 || this.node.x <= 0 && speed < 0) speed = 0;
         this.getComponent(cc.RigidBody).linearVelocity = cc.v2(speed, 0);
     },
 });
