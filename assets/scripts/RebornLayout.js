@@ -82,8 +82,10 @@ cc.Class({
         //this.gameCtl.getComponent("wxAddLayer").shareBtnWithScore(0,callBack, 10);
         //this.gameCtl.subGold(cost1, callBack);
         //this.gameCtl.getComponent("wxAddLayer").assistTwoBtn(callBack, this.reborned == 0 ? cost1 : cost2);
-        this.gameCtl.wxAddLayout.shareBtnWithUrl(0,callBack);
-
+        if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+            this.gameCtl.wxAddLayout.shareBtnWithUrl(0,callBack);
+        }
+        else callBack();
     },
     //广告复活
     onShareBtn: function () {

@@ -32,13 +32,13 @@ cc.Class({
         spriteFrame: {
             default: [],
             type: [cc.SpriteFrame],
-            displayName : "spriteFrame",
+            displayName: "spriteFrame",
         },
         ballPrefab: {
             default: null,
             type: cc.Prefab,
         },
-        ballSpriteFrames:[cc.SpriteFrame],
+        ballSpriteFrames: [cc.SpriteFrame],
         buffPrefab: cc.Prefab,
         //audio: {
         //    url: cc.AudioClip,
@@ -51,8 +51,9 @@ cc.Class({
     onLoad: function () {
         //this.node.color = cc.color(255, 0, 0);
     },
-    init: function (_type) {
+    init: function (_type, balls = 1) {
         this._type = _type;
+        this.balls = balls;
         //let sprite = this.node.getComponent(cc.Sprite);
         let sprite = this.sprite;
         sprite.spriteFrame = this.spriteFrame[_type - 1];
@@ -67,25 +68,27 @@ cc.Class({
         }
         else if (this._type == FoodType.TYPE_BALL) {    //分裂一个球
             audioManager.play("hitBall");
-            let newBall = cc.instantiate(this.ballPrefab);
-            let rand = cc.random0To1();
-            let alpha = rand * Math.PI / 2 + Math.PI / 4;
-            newBall.getComponent("Ball").setSpeed(startSpeed* Math.cos(alpha), startSpeed*Math.sin(alpha));
             let pos = this.node.parent.convertToWorldSpaceAR(this.node.getPosition());
             let mntNode = cc.find("Canvas/gameLogic/mntNode");
             pos = mntNode.convertToNodeSpaceAR(pos);
-            newBall.parent = mntNode;
-            newBall.setPosition(pos);
-            //let color = Math.min(Math.floor(this.ballSpriteFrames.length * rand), this.ballSpriteFrames.length - 1);
-            //newBall.getComponent(cc.Sprite).spriteFrame = this.ballSpriteFrames[color]
-            newBall.getComponent(cc.Sprite).spriteFrame = other.getComponent(cc.Sprite).spriteFrame;
-            newBall.active = true;
+            for (i = 0; i < this.balls; i++) {
+                let newBall = cc.instantiate(this.ballPrefab);
+                let rand = cc.random0To1();
+                let alpha = rand * Math.PI / 2 + Math.PI / 4;
+                newBall.getComponent("Ball").setSpeed(startSpeed * Math.cos(alpha), startSpeed * Math.sin(alpha));
+                newBall.parent = mntNode;
+                newBall.setPosition(pos);
+                //let color = Math.min(Math.floor(this.ballSpriteFrames.length * rand), this.ballSpriteFrames.length - 1);
+                //newBall.getComponent(cc.Sprite).spriteFrame = this.ballSpriteFrames[color]
+                newBall.getComponent(cc.Sprite).spriteFrame = other.getComponent(cc.Sprite).spriteFrame;
+                newBall.active = true;
+                window.gameBalls += 1;
+                window.ballsMap[newBall.getComponent("Ball").id] = window.ballsMap[other.getComponent("Ball").id];
+                window.inBalls += window.ballsMap[newBall.getComponent("Ball").id] ? 0 : 1;
+            }
             this.node.destroy();
-            window.gameBalls += 1;
-            window.ballsMap[newBall.getComponent("Ball").id] =  window.ballsMap[other.getComponent("Ball").id];
-            window.inBalls += window.ballsMap[newBall.getComponent("Ball").id] ? 0 : 1;
         }
-        else if(this._type == FoodType.TYPE_BUFF) { //buff
+        else if (this._type == FoodType.TYPE_BUFF) { //buff
             audioManager.play("hitCoin");
             let newBuff = cc.instantiate(this.buffPrefab);
             newBuff.getComponent("Buff").init(window.gameScore);
@@ -99,11 +102,11 @@ cc.Class({
         }
         else { }
     },
-    onDestroy(){
+    onDestroy() {
         window.gameScore1 += 1;
     },
 
-    start :function() {
+    start: function () {
 
     },
 

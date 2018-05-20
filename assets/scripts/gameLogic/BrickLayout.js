@@ -125,8 +125,10 @@ cc.Class({
 
                 let rand2 = cc.random0To1();
                 let hp = 1;
-                if(idx + 1 > hpSetting.length) hp = hpSetting[hpSetting.length - 1];
-                else hp = hpSetting[idx] + Math.floor(rand2 * (hpSetting[idx + 1] - hpSetting[idx]));
+                let base, dhp;
+                if(idx + 1 > hpSetting.length) {base = hpSetting[hpSetting.length - 1]; dhp = 0;}
+                else {base = hpSetting[idx]; dhp = hpSetting[idx + 1] - hpSetting[idx];}
+                hp = base + Math.floor(rand2 * dhp);
                 /*
                 //特殊处理 必须出块
                 if (ceng <= 2 && this.map[(ceng - 1) * this.bricksNumber + i]) {
@@ -157,7 +159,7 @@ cc.Class({
                     }
                     else;
                     special++;
-                    brickNode.getComponent("Food").init(_type);
+                    brickNode.getComponent("Food").init(_type, base);
                     brickNode.parent = this.node;
                     brickNode.x = this.padding + (i % this.cols) * (this.nodeWidth + this.padding) + this.nodeWidth / 2;
                     brickNode.y = yoffset - this.spacing - this.nodeHeight / 2;
