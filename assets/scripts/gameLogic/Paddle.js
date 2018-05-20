@@ -115,11 +115,10 @@ cc.Class({
                 }
                 console.log(ballsMap, gameBalls, this.balls);
     },*/
-    contackBall: function (ball) {
-        window.ballsMap[ball.id] = false;
-        ball.getComponent(cc.Sprite).spriteFrame = this.ballSpriteFrames[this.stages % this.ballSpriteFrames.length];
+    contackBall: function (id) {
+        window.ballsMap[id] = false;
+        //ball.getComponent(cc.Sprite).spriteFrame = this.ballSpriteFrames[this.stages % this.ballSpriteFrames.length];
         if (window.gameBalls > 0 && inBalls >= window.gameBalls) {
-            //console.log(window.ballsMap, ball.id, window.ballsMap[ball.id]);
             this.game.newStage(()=>{
                 window.inBalls = 0;
                 this.stages++;
@@ -135,7 +134,8 @@ cc.Class({
                 if (window.ballsMap[ball.id]) {
                     inBalls += 1;
                 };
-                this.contackBall(ball);
+                this.contackBall(ball.id);
+                ball.getComponent(cc.Sprite).spriteFrame = this.ballSpriteFrames[this.stages % this.ballSpriteFrames.length];
 
                 break;
             case tagConst.TAG_BUFF:

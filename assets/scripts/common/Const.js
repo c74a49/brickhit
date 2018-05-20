@@ -29,6 +29,10 @@ module.exports = {
         TYPE_BOOM: 1,         //炸弹
         TYPE_BALL: 2,         //分裂
         TYPE_BUFF :3,         //BUFF
+
+        TYPE_BRICK:100,        //砖块
+        TYPE_NULL: 101,         //空
+
     },
 
     BUFF_TYPE:{

@@ -41,19 +41,21 @@ cc.Class({
         switch (other.tag) {
             case tagConst.TAG_BALL:
                 window.gameBalls -= 1
+                let id = other.node.getComponent("Ball").id;
+                other.node.destroy();
                 if (window.gameBalls <= 0) {
                     console.log("gg smd");
                     this.game.rebornCtrl();
                 }
                 else {
-                    let ball = other.node.getComponent("Ball");
-                    if(!window.ballsMap[ball.id]) window.inBalls -= 1;
-                    this.paddle.contackBall(ball);
+                    if(!window.ballsMap[id]) window.inBalls -= 1;
+                    this.paddle.contackBall(id);
                 }
+                /*
                 this.scheduleOnce(() => {
                     other.node.active = false;
                     other.node.destroy();
-                }, timeOut)
+                }, timeOut)*/
                 break;
             case tagConst.TAG_BUFF:
                 other.node.destroy();

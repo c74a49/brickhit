@@ -71,7 +71,7 @@ cc.Class({
             let pos = this.node.parent.convertToWorldSpaceAR(this.node.getPosition());
             let mntNode = cc.find("Canvas/gameLogic/mntNode");
             pos = mntNode.convertToNodeSpaceAR(pos);
-            for (i = 0; i < this.balls; i++) {
+            for (let i = 0; i < this.balls; i++) {
                 let newBall = cc.instantiate(this.ballPrefab);
                 let rand = cc.random0To1();
                 let alpha = rand * Math.PI / 2 + Math.PI / 4;

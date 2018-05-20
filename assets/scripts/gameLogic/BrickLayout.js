@@ -17,6 +17,79 @@ var distance = (p1, p2) => {
     return Math.sqrt(squre(dx) + squre(dy));
 }
 let foodType = require("Const").FOOD_TYPE;
+const concatnv = (n, value, arr)=>{
+    if(n <= 0) return arr;
+    return concatnv(n - 1, value, arr.concat(value))
+};
+//{@num 数量}
+//{@flg 标签}
+//{@arr Map}
+const getSetting = (num, flg, ar) => {
+    const prime = 251;
+    const size = ar.length;
+    //@dp 递归层数
+    const hashMap = (dp, idx, arr) =>{
+        if (dp > size) {//没有空位
+            console.log("error settings!!!");
+            return arr;
+        }
+        //console.log(arr, idx, arr[idx], foodType.TYPE_NULL);
+        idx = idx % size;
+        if (arr[idx] == foodType.TYPE_NULL) {
+            const left = arr.slice(0, idx)  //[0, idx)
+            const right = arr.slice(idx + 1);//[idx + 1, size)
+            return left.concat(flg, right);
+        }
+        //冲突处理
+        else return hashMap(dp + 1, idx * prime, arr);
+    };
+    const getHashMap = (n, arr) => {
+        if (n > num) return arr;
+        const rand = Math.floor(cc.random0To1() * size);
+        const map = hashMap(1, rand, arr);
+        return getHashMap(n + 1, map);
+    }
+    return getHashMap(1, ar);
+
+};
+const sets = [
+    {score:1000, brickpl:[[2, 50], [3, 30], [4, 20]],boompl:[[0, 50], [1, 50]], ballpl:[[0, 30], [1, 70]], buffpl:[[0, 30], [1, 70]]},
+];
+const getSet = (score)=>{
+    const arr = sets
+    const search = (idx)=>{
+        if(idx >= arr.length) return;
+        const ans = arr[idx]
+        if(ans.score > score) return ans;
+        else return search(idx + 1);
+    }
+    return search(0);
+};
+const head = (arr)=>arr.slice(0, 1)[0];
+const tail = (arr)=>arr.slice(1);
+const computepl = (pl)=>{
+    let total = 0;
+    pl.map((pv)=>{total += pv[1];});
+    const ps = pl.map((pv)=>pv[1] / total);
+    let random = cc.random0To1();
+    /*
+    const search = (idx, rand, arr) =>{
+        const p  = head(arr);
+        if(!p) return null;
+        if(rand <= p) return idx;
+        else return search(idx + 1, rand - p, tail(arr));
+    }
+    return pl[search(0, random, ps)][0];
+    */
+   //console.log(ps);
+   for(let i = 0; i < pl.length; i++){
+       if(random <= ps[i]){
+            return pl[i][0];
+       }
+       else random -= ps[i];
+   }
+   console.log("error");
+}
 cc.Class({
     extends: cc.Component,
 
@@ -37,7 +110,7 @@ cc.Class({
         let pos = cc.p(this.node.width / 2, -this.node.height / 2);
         return this.node.convertToWorldSpaceAR(pos);
     },
-    onLoad : function(){
+    onLoad: function () {
         this.ceng = 0;
     },
 
@@ -56,13 +129,51 @@ cc.Class({
     newBrickLayout: function (repeat) {
         let self = this;
 
+        for (let j = 0; j < repeat; j++) {
+            const yoffset = j * (this.spacing + this.nodeHeight);
+            const score = window.gameScore + j;
+
+            const empty = concatnv(this.bricksNumber, foodType.TYPE_NULL, []);
+            //console.log(empty);
+            const set = getSet(score);
+            const brickNum = computepl(set.brickpl);
+            const brickSet = getSetting(brickNum, foodType.TYPE_BRICK,empty);
+            //console.log("brickSet", brickSet);
+            const ballNum = computepl(set.ballpl);
+            const ballSet = getSetting(ballNum, foodType.TYPE_BALL,brickSet);
+            //console.log("ballSet", ballSet);
+            const boomNum = computepl(set.boompl);
+            const boomSet = getSetting(boomNum, foodType.TYPE_BOOM,ballSet);
+            //console.log("boomSet:", boomSet);
+            const buffNum = computepl(set.buffpl);
+            const buffSet = getSetting(buffNum, foodType.TYPE_BUFF,boomSet);
+            //console.log("buffSet:", buffSet);
+            const map = buffSet;
+            const hp = 1;
+            for (let i = 0; i < this.bricksNumber; i++) {
+                const configNode = (node) => {
+                    node.parent = this.node;
+                    node.x = this.padding + (i % this.cols) * (this.nodeWidth + this.padding) + this.nodeWidth / 2;
+                    node.y = yoffset - this.spacing - this.nodeHeight / 2;
+                }
+                const _type = map[i];
+
+                let brickNode;
+                if (_type == foodType.TYPE_NULL) continue;
+                else if (_type == foodType.TYPE_BRICK) {
+                    const node = cc.instantiate(this.brickPrefab);
+                    node.getComponent("Brick").init(hp);
+                    configNode(node);
+                }
+                else {
+                    const node = cc.instantiate(this.foodPrefab);
+                    node.getComponent("Food").init(_type);
+                    configNode(node);
+                }
+            }
+        }
+        /*
         let special = 0;
-        //let ballCnt = 0;
-        //let boomCnt = 0;
-        //let buffCnt = 0;
-        //const ballMax = 3;
-        //const boomMax = 1;
-        //const buffMax = 2;
         for (var j = 0; j < repeat; j++) {
             let yoffset = j * (this.spacing + this.nodeHeight);
             let score = window.gameScore + j;
@@ -129,22 +240,7 @@ cc.Class({
                 if(idx + 1 > hpSetting.length) {base = hpSetting[hpSetting.length - 1]; dhp = 0;}
                 else {base = hpSetting[idx]; dhp = hpSetting[idx + 1] - hpSetting[idx];}
                 hp = base + Math.floor(rand2 * dhp);
-                /*
-                //特殊处理 必须出块
-                if (ceng <= 2 && this.map[(ceng - 1) * this.bricksNumber + i]) {
-                    //出块数量控制
-                    if (brickCnt >= getBrickLimit()) {
-                        continue;
-                    }
-                    //let brickNode = cc.instantiate(this.brickPrefab);
-                    let brickNode = getBrickPrefabNode();
-                    brickNode.getComponent("Brick").init(hp);
-                    brickNode.parent = this.node;
-                    brickNode.x = this.padding + (i % this.cols) * (this.nodeWidth + this.padding) + this.nodeWidth / 2;
-                    brickNode.y = yoffset - this.spacing - this.nodeHeight / 2;
-                    brickCnt++;
-                    continue;
-                }*/
+
                 //特殊处理 必出一个分裂球，和一个加长buff
                 if (ceng <= 2 && this.map[(ceng - 1) * this.bricksNumber + i]) {
                     let brickNode = cc.instantiate(this.foodPrefab);
@@ -203,7 +299,7 @@ cc.Class({
                     brickNode.y = yoffset - this.spacing - this.nodeHeight / 2;
                 }
             }
-        }
+        } */
 
         let down = repeat;
         let over = false;
@@ -229,7 +325,7 @@ cc.Class({
         return over;
         //}
     },
-    
+
 
     //then, fp
     destroyNode: function (node) {
