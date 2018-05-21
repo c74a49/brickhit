@@ -16,7 +16,7 @@ var distance = (p1, p2) => {
     var squre = (x) => x * x;
     return Math.sqrt(squre(dx) + squre(dy));
 }
-let foodType = require("Const").FOOD_TYPE;
+const foodType = require("Const").FOOD_TYPE;
 const concatnv = (n, value, arr)=>{
     if(n <= 0) return arr;
     return concatnv(n - 1, value, arr.concat(value))
@@ -52,9 +52,9 @@ const getSetting = (num, flg, ar) => {
     return getHashMap(1, ar);
 
 };
-const sets = [
-    {score:1000, brickpl:[[2, 50], [3, 30], [4, 20]],boompl:[[0, 50], [1, 50]], ballpl:[[0, 30], [1, 70]], buffpl:[[0, 30], [1, 70]]},
-];
+const sets = require("Settings").brickSetting;
+const getSet = (score) => require("Settings").getSet(sets, score);
+/*
 const getSet = (score)=>{
     const arr = sets
     const search = (idx)=>{
@@ -65,31 +65,8 @@ const getSet = (score)=>{
     }
     return search(0);
 };
-const head = (arr)=>arr.slice(0, 1)[0];
-const tail = (arr)=>arr.slice(1);
-const computepl = (pl)=>{
-    let total = 0;
-    pl.map((pv)=>{total += pv[1];});
-    const ps = pl.map((pv)=>pv[1] / total);
-    let random = cc.random0To1();
-    /*
-    const search = (idx, rand, arr) =>{
-        const p  = head(arr);
-        if(!p) return null;
-        if(rand <= p) return idx;
-        else return search(idx + 1, rand - p, tail(arr));
-    }
-    return pl[search(0, random, ps)][0];
-    */
-   //console.log(ps);
-   for(let i = 0; i < pl.length; i++){
-       if(random <= ps[i]){
-            return pl[i][0];
-       }
-       else random -= ps[i];
-   }
-   console.log("error");
-}
+*/
+const computepl = require("Settings").computepl;
 cc.Class({
     extends: cc.Component,
 
@@ -115,7 +92,8 @@ cc.Class({
     },
 
     reset: function (ctl) {
-        this.node.removeAllChildren();
+        //this.node.removeAllChildren();
+        this.node.children.map((node)=>node.destroy());
         let brickNode = cc.instantiate(this.brickPrefab);
         this.nodeWidth = brickNode.width;
         this.nodeHeight = brickNode.height;
@@ -136,6 +114,14 @@ cc.Class({
             const empty = concatnv(this.bricksNumber, foodType.TYPE_NULL, []);
             //console.log(empty);
             const set = getSet(score);
+            let map = empty;
+            set.config.map((item)=>{
+                const type = item.type;
+                const pl = item.pList;
+                const num = computepl(pl);
+                map = getSetting(num, type, map);
+            });
+            /*
             const brickNum = computepl(set.brickpl);
             const brickSet = getSetting(brickNum, foodType.TYPE_BRICK,empty);
             //console.log("brickSet", brickSet);
@@ -149,8 +135,10 @@ cc.Class({
             const buffSet = getSetting(buffNum, foodType.TYPE_BUFF,boomSet);
             //console.log("buffSet:", buffSet);
             const map = buffSet;
-            const hp = 1;
+            */
             for (let i = 0; i < this.bricksNumber; i++) {
+                const hppl = computepl(set.hppl);
+                const hp = hppl[0] + Math.floor((hppl[1] - hppl[0]) * cc.random0To1());
                 const configNode = (node) => {
                     node.parent = this.node;
                     node.x = this.padding + (i % this.cols) * (this.nodeWidth + this.padding) + this.nodeWidth / 2;
