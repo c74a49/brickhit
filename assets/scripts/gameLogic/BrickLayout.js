@@ -30,7 +30,7 @@ const getSetting = (num, flg, ar) => {
     //@dp 递归层数
     const hashMap = (dp, idx, arr) =>{
         if (dp > size) {//没有空位
-            console.log("error settings!!!");
+            console.log("error settings!!!", arr, flg);
             return arr;
         }
         //console.log(arr, idx, arr[idx], foodType.TYPE_NULL);
@@ -41,7 +41,7 @@ const getSetting = (num, flg, ar) => {
             return left.concat(flg, right);
         }
         //冲突处理
-        else return hashMap(dp + 1, idx * prime, arr);
+        else return hashMap(dp + 1, idx + prime, arr);
     };
     const getHashMap = (n, arr) => {
         if (n > num) return arr;
@@ -92,8 +92,8 @@ cc.Class({
     },
 
     reset: function (ctl) {
-        //this.node.removeAllChildren();
         this.node.children.map((node)=>node.destroy());
+        this.node.removeAllChildren();
         let brickNode = cc.instantiate(this.brickPrefab);
         this.nodeWidth = brickNode.width;
         this.nodeHeight = brickNode.height;
